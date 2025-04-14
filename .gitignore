@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 *.so
+*.db
 .Python
 build/
 develop-eggs/
@@ -66,5 +67,7 @@ Thumbs.db
 加餐-llamaindex组件/
 data/
 **/data
+
+**/99-其它*/
 
 
