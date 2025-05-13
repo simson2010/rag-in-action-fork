@@ -1,7 +1,8 @@
 # 导入相关的库
 import os
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_community.document_loaders import PyPDFLoader, TextLoader
+from langchain_community.document_loaders import PyPDFLoader, TextLoader, PyMuPDFLoader
+from langchain_community.document_loaders.parsers import RapidOCRBlobParser
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import Chroma
 from langchain.prompts import ChatPromptTemplate
@@ -10,27 +11,44 @@ from langchain_deepseek import ChatDeepSeek
 from langchain.load import dumps, loads
 # 加载文档
 doc_dir = "90-文档-Data/山西文旅"
+file_total = 1
+file_count = 0
 def load_documents(directory):
     """读取目录中的所有文档（包括PDF、TXT、DOCX)"""
+    global file_total, file_count
     documents = []
     for filename in os.listdir(directory):
         filepath = os.path.join(directory, filename)
         
         if filename.endswith(".pdf"):
-            loader = PyPDFLoader(filepath)
+            file_count += 1
+            print(filepath)
+            loader = PyMuPDFLoader(filepath,
+                                    mode="single",
+                                    images_inner_format="HTML-image",
+                                    images_parser=RapidOCRBlobParser(),
+                                    )
         elif filename.endswith(".txt"):
+            file_count += 1
+            print(filepath)
             loader = TextLoader(filepath)
         else:
             continue  # 跳过不支持的文件类型
         documents.extend(loader.load())
+        if file_count >= file_total:
+            break
     return documents
 docs = load_documents(doc_dir)
+
+for doc in docs:
+    print(doc.page_content)
 # 文本切块
 text_splitter = RecursiveCharacterTextSplitter(
-    chunk_size=300,
-    chunk_overlap=50
+    chunk_size=100,
+    chunk_overlap=20
 )
 splits = text_splitter.split_documents(docs)
+print("total splits:", splits)
 # 获取嵌入并创建向量索引
 embed_model = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 vectorstore = Chroma.from_documents(documents=splits, embedding=embed_model)
