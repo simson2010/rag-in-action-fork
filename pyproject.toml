@@ -86,6 +86,7 @@ dependencies = [
     "pydantic-core==2.27.2",
     "pydantic-settings==2.8.1",
     "pygments==2.19.1",
+    "pymilvus==2.5.4",
     "pymupdf>=1.25.5",
     "pytesseract>=0.3.13",
     "python-dateutil==2.9.0.post0",

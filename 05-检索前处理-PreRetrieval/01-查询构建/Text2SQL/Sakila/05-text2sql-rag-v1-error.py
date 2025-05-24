@@ -18,7 +18,7 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 # 建议使用新 Response API 风格
 # 例如: openai.chat.completions.create(...) 而非旧的 ChatCompletion.create
 
-MODEL_NAME = os.getenv("OPENAI_MODEL", "gpt-4o")
+MODEL_NAME = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 
 # 3. 嵌入函数初始化
 def init_embedding():

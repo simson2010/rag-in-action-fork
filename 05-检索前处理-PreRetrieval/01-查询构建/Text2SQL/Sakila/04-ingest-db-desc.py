@@ -65,6 +65,7 @@ records = []
 for emb, rec in zip(embeddings, data):
     rec["vector"] = emb
     records.append(rec)
+print(records)
 
 res = client.insert(collection_name=collection_name, data=records)
 logging.info(f"[DBDESC] 成功插入了 {len(records)} 条记录到Milvus")
