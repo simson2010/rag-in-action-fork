@@ -341,11 +341,6 @@ async def main():
     )
     print(contextual_results)
     
-    print("\n--- 观察结果 ---")
-    print("我们观察到上下文检索可以提高检索指标；")
-    print("然而，效果在很大程度上取决于查询、块大小、块重叠和其他变量。")
-    print("因此，建议根据具体应用场景进行实验，以优化此技术的效果。")
-
 if __name__ == "__main__":
     asyncio.run(main())
 
